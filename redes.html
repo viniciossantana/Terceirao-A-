@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" href="navicon.png" type="image/png">
+
+<title>Nossa Turma • Redes Sociais</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+:root{
+    --vinho:#5d071b;
+    --vinho-light:#8d1837;
+    --vinho-deep:#200108;
+    --text:#ffffff;
+    --muted:rgba(255,255,255,.62);
+    --line:rgba(255,255,255,.12);
+    --card:rgba(255,255,255,.055);
+    --transition:.5s cubic-bezier(.16,1,.3,1);
+}
+
+body.light{
+    --vinho:#5d071b;
+    --vinho-light:#8d1837;
+    --vinho-deep:#ffffff;
+    --text:#5d071b;
+    --muted:rgba(93,7,27,.62);
+    --line:rgba(93,7,27,.12);
+    --card:rgba(93,7,27,.045);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    font-family:"Inter",sans-serif;
+    background:var(--vinho-deep);
+    color:var(--text);
+    overflow:hidden;
+    transition:background .6s ease,color .6s ease;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font-family:inherit;
+}
+
+/* FUNDO */
+
+.background{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+.background::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    top:-250px;
+    right:-180px;
+    border-radius:50%;
+    background:var(--vinho);
+    opacity:.12;
+    filter:blur(80px);
+}
+
+.background::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    bottom:-250px;
+    left:-180px;
+    border-radius:50%;
+    background:var(--vinho-light);
+    opacity:.1;
+    filter:blur(90px);
+}
+
+/* NAVBAR */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:82px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+}
+
+.nav-content{
+    width:min(1200px,92%);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:-.04em;
+}
+
+.logo-mark{
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:var(--card);
+    border:1px solid var(--line);
+    font-size:11px;
+}
+
+.theme-toggle{
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--line);
+    border-radius:50%;
+    background:var(--card);
+    color:var(--text);
+    cursor:pointer;
+    transition:var(--transition);
+}
+
+.theme-toggle:hover{
+    background:var(--vinho);
+    color:#fff;
+    transform:scale(1.07);
+}
+
+/* CONTEÚDO */
+
+.redes-page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:100px 20px 50px;
+    position:relative;
+    z-index:2;
+}
+
+.redes-content{
+    width:min(650px,100%);
+    text-align:center;
+}
+
+/* ÍCONE */
+
+.redes-icon{
+    width:76px;
+    height:76px;
+    margin:0 auto 30px;
+    display:grid;
+    place-items:center;
+    border-radius:24px;
+    background:var(--vinho);
+    color:#fff;
+    font-size:28px;
+    box-shadow:0 25px 70px rgba(93,7,27,.25);
+    animation:iconAppear .8s cubic-bezier(.16,1,.3,1) both;
+}
+
+/* TEXTO */
+
+.redes-label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin-bottom:20px;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    animation:fadeUp .8s .1s both;
+}
+
+.redes-label::before,
+.redes-label::after{
+    content:"";
+    width:25px;
+    height:1px;
+    background:currentColor;
+}
+
+.redes-content h1{
+    font-size:clamp(52px,8vw,88px);
+    line-height:.88;
+    letter-spacing:-.09em;
+    animation:fadeUp .8s .2s both;
+}
+
+.redes-content h1 em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.redes-content p{
+    max-width:500px;
+    margin:28px auto 0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.8;
+    animation:fadeUp .8s .3s both;
+}
+
+/* REDES */
+
+.redes-buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:38px;
+    animation:fadeUp .8s .4s both;
+}
+
+.rede-button{
+    min-width:190px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:11px;
+    padding:16px 22px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    background:var(--card);
+    color:var(--text);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.08em;
+    transition:var(--transition);
+}
+
+.rede-button i{
+    font-size:15px;
+}
+
+.rede-button:hover{
+    background:var(--vinho);
+    border-color:var(--vinho);
+    color:#fff;
+    transform:translateY(-5px);
+    box-shadow:0 20px 50px rgba(93,7,27,.2);
+}
+
+/* VOLTAR */
+
+.back-button{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    margin-top:28px;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    transition:.3s;
+    animation:fadeUp .8s .5s both;
+}
+
+.back-button i{
+    transition:.3s;
+}
+
+.back-button:hover{
+    color:var(--text);
+}
+
+.back-button:hover i{
+    transform:translateX(-5px);
+}
+
+/* FOOTER */
+
+.redes-footer{
+    position:fixed;
+    bottom:25px;
+    left:0;
+    width:100%;
+    text-align:center;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:.05em;
+}
+
+/* ANIMAÇÕES */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(25px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes iconAppear{
+    from{
+        opacity:0;
+        transform:scale(.7) rotate(-8deg);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1) rotate(0);
+    }
+}
+
+/* RESPONSIVO */
+
+@media(max-width:600px){
+
+    .navbar{
+        height:70px;
+    }
+
+    .logo{
+        font-size:12px;
+    }
+
+    .logo-mark{
+        width:35px;
+        height:35px;
+    }
+
+    .redes-page{
+        padding-top:80px;
+    }
+
+    .redes-icon{
+        width:68px;
+        height:68px;
+        border-radius:21px;
+        font-size:24px;
+        margin-bottom:25px;
+    }
+
+    .redes-content h1{
+        font-size:55px;
+    }
+
+    .redes-content p{
+        font-size:12px;
+    }
+
+    .redes-buttons{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .rede-button{
+        width:min(300px,100%);
+    }
+
+    .redes-footer{
+        bottom:15px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<header class="navbar">
+
+    <div class="nav-content">
+
+        <a href="index.html" class="logo">
+            <span class="logo-mark">3A</span>
+            NOSSA TURMA
+        </a>
+
+        <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Alterar tema"
+        >
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+    </div>
+
+</header>
+
+<main class="redes-page">
+
+    <div class="redes-content">
+
+        <div class="redes-icon">
+            <i class="fa-solid fa-share-nodes"></i>
+        </div>
+
+        <div class="redes-label">
+            NOS ENCONTRE POR AÍ
+        </div>
+
+        <h1>
+            Siga a gente<br>
+            nas <em>redes.</em>
+        </h1>
+
+        <p>
+            Quer acompanhar os vídeos, momentos, novidades e tudo
+            que acontece com a nossa turma? Então vem com a gente.
+            A história continua nas nossas redes sociais.
+        </p>
+
+        <div class="redes-buttons">
+
+            <a
+                href="https://www.instagram.com/terceiraogussmao/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rede-button"
+            >
+                <i class="fa-brands fa-instagram"></i>
+                INSTAGRAM
+            </a>
+
+            <a
+                href="https://www.tiktok.com/@terceiraogussmao"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rede-button"
+            >
+                <i class="fa-brands fa-tiktok"></i>
+                TIKTOK
+            </a>
+
+        </div>
+
+        <a
+            href="javascript:history.back()"
+            class="back-button"
+        >
+            <i class="fa-solid fa-arrow-left"></i>
+            VOLTAR À PÁGINA ANTERIOR
+        </a>
+
+    </div>
+
+</main>
+
+<script>
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+if(localStorage.getItem("turma-theme") === "light"){
+    document.body.classList.add("light");
+}
+
+function updateThemeIcon(){
+
+    const icon =
+        themeToggle.querySelector("i");
+
+    if(document.body.classList.contains("light")){
+        icon.className =
+            "fa-solid fa-sun";
+    }else{
+        icon.className =
+            "fa-solid fa-moon";
+    }
+
+}
+
+updateThemeIcon();
+
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("light");
+
+    localStorage.setItem(
+        "turma-theme",
+        document.body.classList.contains("light")
+            ? "light"
+            : "dark"
+    );
+
+    updateThemeIcon();
+
+});
+
+</script>
+
+</body>
+</html>
