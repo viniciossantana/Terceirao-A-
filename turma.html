@@ -1,0 +1,2413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" href="navicon.png" type="image/png">
+
+<title>Nossa Turma • Quem faz acontecer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root{
+    --vinho:#5d071b;
+    --vinho-dark:#35030f;
+    --vinho-deep:#200108;
+    --vinho-light:#8d1837;
+    --vinho-soft:#b84c68;
+    --white:#ffffff;
+    --text:#ffffff;
+    --muted:rgba(255,255,255,.62);
+    --line:rgba(255,255,255,.12);
+    --card:rgba(255,255,255,.055);
+    --shadow:0 30px 90px rgba(0,0,0,.3);
+    --transition:.5s cubic-bezier(.16,1,.3,1);
+}
+
+body.light{
+    --vinho:#5d071b;
+    --vinho-dark:#f6eef1;
+    --vinho-deep:#ffffff;
+    --vinho-light:#8d1837;
+    --vinho-soft:#a52b4d;
+    --white:#ffffff;
+    --text:#5d071b;
+    --muted:rgba(93,7,27,.62);
+    --line:rgba(93,7,27,.12);
+    --card:rgba(93,7,27,.045);
+    --shadow:0 30px 90px rgba(93,7,27,.12);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Inter",sans-serif;
+    background:var(--vinho-deep);
+    color:var(--text);
+    overflow-x:hidden;
+    transition:background .6s ease,color .6s ease;
+}
+
+body.modal-open{
+    overflow:hidden;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font-family:inherit;
+}
+
+::selection{
+    background:var(--vinho);
+    color:#fff;
+}
+
+/* =========================
+   CURSOR
+========================= */
+
+.cursor-glow{
+    position:fixed;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    background:rgba(141,24,55,.08);
+    filter:blur(75px);
+    pointer-events:none;
+    z-index:0;
+    transform:translate(-50%,-50%);
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:82px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    transition:.4s ease;
+}
+
+.navbar.scrolled{
+    background:rgba(32,1,8,.78);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--line);
+}
+
+body.light .navbar.scrolled{
+    background:rgba(255,255,255,.86);
+}
+
+.nav-content{
+    width:min(1200px,92%);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:-.04em;
+}
+
+.logo-mark{
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:var(--card);
+    border:1px solid var(--line);
+    font-size:11px;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:30px;
+    list-style:none;
+}
+
+.nav-links a{
+    position:relative;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.08em;
+    opacity:.65;
+    transition:.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+    opacity:1;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:0;
+    height:2px;
+    background:currentColor;
+    transition:.3s;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after{
+    width:100%;
+}
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.theme-toggle,
+.menu-toggle{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--text);
+    cursor:pointer;
+    transition:var(--transition);
+}
+
+.theme-toggle:hover,
+.menu-toggle:hover{
+    background:var(--vinho);
+    color:#fff;
+    transform:scale(1.07);
+}
+
+.menu-toggle{
+    display:none;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:78vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 80% 20%,rgba(141,24,55,.38),transparent 30%),
+        radial-gradient(circle at 10% 90%,rgba(93,7,27,.4),transparent 35%),
+        var(--vinho-deep);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        var(--vinho-deep) 0%,
+        rgba(32,1,8,.72) 55%,
+        transparent 100%
+    );
+    opacity:.95;
+}
+
+body.light .hero::before{
+    background:linear-gradient(
+        90deg,
+        #fff 0%,
+        rgba(255,255,255,.82) 55%,
+        transparent 100%
+    );
+}
+
+.hero-decoration{
+    position:absolute;
+    right:-80px;
+    bottom:-180px;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    animation:rotate 25s linear infinite;
+}
+
+.hero-decoration::before,
+.hero-decoration::after{
+    content:"";
+    position:absolute;
+    inset:50px;
+    border-radius:50%;
+    border:1px solid var(--line);
+}
+
+.hero-decoration::after{
+    inset:110px;
+}
+
+.hero-content{
+    width:min(1200px,92%);
+    margin:auto;
+    position:relative;
+    z-index:2;
+    padding-top:80px;
+}
+
+.hero-label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin-bottom:25px;
+    animation:fadeUp .9s .1s both;
+}
+
+.hero-label span{
+    width:30px;
+    height:1px;
+    background:currentColor;
+}
+
+.hero h1{
+    max-width:1000px;
+    font-size:clamp(65px,10vw,145px);
+    line-height:.84;
+    letter-spacing:-.085em;
+    font-weight:900;
+    animation:fadeUp .9s .2s both;
+}
+
+.hero h1 em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.hero-text{
+    max-width:530px;
+    margin-top:32px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.8;
+    animation:fadeUp .9s .35s both;
+}
+
+.hero-stat{
+    margin-top:38px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    animation:fadeUp .9s .5s both;
+}
+
+.hero-stat strong{
+    font-size:15px;
+}
+
+.hero-stat span{
+    width:1px;
+    height:20px;
+    background:var(--line);
+}
+
+.hero-stat small{
+    color:var(--muted);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.13em;
+}
+
+/* =========================
+   SEÇÕES
+========================= */
+
+.section{
+    padding:140px 0;
+}
+
+.section-content{
+    width:min(1200px,92%);
+    margin:auto;
+}
+
+.section-label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:20px;
+}
+
+.section-label::before{
+    content:"";
+    width:25px;
+    height:1px;
+    background:currentColor;
+}
+
+.section-title{
+    font-size:clamp(45px,6vw,80px);
+    line-height:.94;
+    letter-spacing:-.07em;
+}
+
+.section-title em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.section-description{
+    max-width:550px;
+    margin-top:25px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.8;
+}
+
+.team-header{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:40px;
+    margin-bottom:70px;
+}
+
+.team-counter{
+    text-align:right;
+}
+
+.team-counter strong{
+    display:block;
+    font-size:55px;
+    line-height:1;
+    letter-spacing:-.07em;
+}
+
+.team-counter span{
+    display:block;
+    margin-top:8px;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.team-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.person-card{
+    position:relative;
+    aspect-ratio:3/4;
+    border-radius:22px;
+    overflow:hidden;
+    cursor:pointer;
+    background:var(--vinho);
+    isolation:isolate;
+    transition:var(--transition);
+}
+
+.person-card:hover{
+    transform:translateY(-9px);
+    box-shadow:var(--shadow);
+}
+
+.person-photo{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.person-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:.7s cubic-bezier(.16,1,.3,1);
+}
+
+.person-photo::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.05) 20%,
+            rgba(32,1,8,.18) 45%,
+            rgba(32,1,8,.94) 100%
+        );
+}
+
+.person-card:hover .person-photo img{
+    transform:scale(1.07);
+}
+
+.person-number{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:3;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.1em;
+    color:#fff;
+    opacity:.65;
+}
+
+.person-social{
+    position:absolute;
+    top:17px;
+    right:17px;
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.2);
+    background:rgba(0,0,0,.18);
+    backdrop-filter:blur(10px);
+    z-index:3;
+    color:#fff;
+    font-size:12px;
+    transition:.35s;
+}
+
+.person-card:hover .person-social{
+    background:#fff;
+    color:var(--vinho);
+    transform:rotate(10deg);
+}
+
+.person-info{
+    position:absolute;
+    left:23px;
+    right:23px;
+    bottom:23px;
+    z-index:3;
+    color:#fff;
+}
+
+.person-role{
+    display:inline-flex;
+    padding:6px 9px;
+    border-radius:100px;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+}
+
+.person-info h3{
+    font-size:22px;
+    line-height:1;
+    letter-spacing:-.04em;
+}
+
+.person-info p{
+    margin-top:7px;
+    color:rgba(255,255,255,.58);
+    font-size:10px;
+    line-height:1.5;
+    padding-right:35px;
+}
+
+.person-arrow{
+    position:absolute;
+    right:0;
+    bottom:0;
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:50%;
+    font-size:10px;
+    opacity:0;
+    transform:translateX(-8px);
+    transition:.4s;
+}
+
+.person-card:hover .person-arrow{
+    opacity:1;
+    transform:translateX(0);
+}
+
+/* =========================
+   DESTAQUE
+========================= */
+
+.featured{
+    background:var(--vinho);
+    color:#fff;
+    overflow:hidden;
+}
+
+.featured .section-label{
+    color:rgba(255,255,255,.55);
+}
+
+.featured-content{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:100px;
+    align-items:center;
+}
+
+.featured-number{
+    font-size:clamp(130px,18vw,250px);
+    line-height:.7;
+    font-weight:900;
+    letter-spacing:-.1em;
+    opacity:.08;
+}
+
+.featured-text h2{
+    font-size:clamp(45px,6vw,78px);
+    line-height:.92;
+    letter-spacing:-.07em;
+}
+
+.featured-text h2 em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.featured-text p{
+    max-width:480px;
+    margin-top:25px;
+    color:rgba(255,255,255,.58);
+    line-height:1.8;
+    font-size:13px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.profile-modal{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:30px;
+    background:rgba(10,0,3,.8);
+    backdrop-filter:blur(18px);
+    opacity:0;
+    visibility:hidden;
+    transition:.4s;
+}
+
+.profile-modal.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.modal-box{
+    width:min(850px,100%);
+    max-height:90vh;
+    overflow:auto;
+    position:relative;
+    border-radius:28px;
+    background:var(--vinho-deep);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    transform:translateY(35px) scale(.96);
+    transition:.5s cubic-bezier(.16,1,.3,1);
+}
+
+.profile-modal.active .modal-box{
+    transform:translateY(0) scale(1);
+}
+
+.modal-close{
+    position:absolute;
+    top:18px;
+    right:18px;
+    z-index:5;
+    width:42px;
+    height:42px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    background:rgba(0,0,0,.2);
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.modal-close:hover{
+    background:#fff;
+    color:var(--vinho);
+    transform:rotate(90deg);
+}
+
+.modal-content{
+    display:grid;
+    grid-template-columns:.85fr 1.15fr;
+}
+
+.modal-photo{
+    min-height:550px;
+    background-size:cover;
+    background-position:center;
+    position:relative;
+}
+
+.modal-photo::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        180deg,
+        transparent 30%,
+        rgba(0,0,0,.55) 100%
+    );
+}
+
+.modal-info{
+    padding:65px 50px 50px;
+}
+
+.modal-number{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.2em;
+}
+
+.modal-info h2{
+    margin-top:15px;
+    font-size:52px;
+    line-height:.9;
+    letter-spacing:-.065em;
+}
+
+.modal-role{
+    margin-top:18px;
+    color:var(--vinho-soft);
+    font-size:10px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+}
+
+.modal-description{
+    margin-top:35px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.8;
+}
+
+.modal-social{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:30px;
+    padding:13px 18px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    font-size:11px;
+    font-weight:800;
+    transition:.3s;
+}
+
+.modal-social:hover{
+    background:var(--vinho);
+    color:#fff;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    padding:35px 0;
+    border-top:1px solid var(--line);
+}
+
+.footer-content{
+    width:min(1200px,92%);
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.footer-copy{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.footer-socials{
+    display:flex;
+    gap:9px;
+}
+
+.footer-socials a{
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--line);
+    border-radius:50%;
+    font-size:12px;
+    transition:.3s;
+}
+
+.footer-socials a:hover{
+    background:var(--vinho);
+    color:#fff;
+    transform:translateY(-3px);
+}
+
+/* =========================
+   ANIMAÇÕES
+========================= */
+
+.reveal{
+    opacity:0;
+    transform:translateY(35px);
+    transition:1s cubic-bezier(.16,1,.3,1);
+}
+
+.reveal.active{
+    opacity:1;
+    transform:translateY(0);
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes rotate{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:950px){
+
+    .nav-links{
+        position:fixed;
+        top:82px;
+        left:0;
+        width:100%;
+        padding:30px;
+        flex-direction:column;
+        align-items:flex-start;
+        background:var(--vinho-deep);
+        border-bottom:1px solid var(--line);
+        transform:translateY(-130%);
+        transition:.5s;
+    }
+
+    .nav-links.open{
+        transform:translateY(0);
+    }
+
+    .menu-toggle{
+        display:block;
+    }
+
+    .team-header{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .team-counter{
+        text-align:left;
+    }
+
+    .team-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .featured-content{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .featured-number{
+        font-size:150px;
+    }
+
+    .modal-content{
+        grid-template-columns:1fr;
+    }
+
+    .modal-photo{
+        min-height:350px;
+    }
+}
+
+@media(max-width:650px){
+
+    .section{
+        padding:100px 0;
+    }
+
+    .hero{
+        min-height:75vh;
+    }
+
+    .hero h1{
+        font-size:64px;
+    }
+
+    .hero-text{
+        font-size:13px;
+    }
+
+    .team-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .person-card{
+        border-radius:16px;
+    }
+
+    .person-info{
+        left:15px;
+        right:15px;
+        bottom:15px;
+    }
+
+    .person-info h3{
+        font-size:17px;
+    }
+
+    .person-info p{
+        font-size:9px;
+    }
+
+    .person-number{
+        top:14px;
+        left:14px;
+    }
+
+    .person-social{
+        top:12px;
+        right:12px;
+        width:32px;
+        height:32px;
+    }
+
+    .modal-info{
+        padding:50px 28px 35px;
+    }
+
+    .modal-info h2{
+        font-size:43px;
+    }
+
+    .footer-content{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .cursor-glow{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<header class="navbar" id="navbar">
+
+    <div class="nav-content">
+
+        <a href="index.html" class="logo">
+            <span class="logo-mark">NT</span>
+            NOSSA TURMA
+        </a>
+
+        <nav>
+            <ul class="nav-links" id="navLinks">
+
+                <li>
+                    <a href="index.html">INÍCIO</a>
+                </li>
+
+                <li>
+                    <a href="turma.html" class="active">A TURMA</a>
+                </li>
+
+                <li>
+                    <a href="conteudo.html">CONTEÚDO</a>
+                </li>
+
+                <li>
+                    <a href="momentos.html">MOMENTOS</a>
+                </li>
+
+                <li>
+                    <a href="redes.html">REDES</a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <div class="nav-actions">
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Alterar tema"
+            >
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Abrir menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-decoration"></div>
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            <span></span>
+            01 — QUEM SOMOS
+        </div>
+
+        <h1>
+            Por trás<br>
+            de cada <em>vídeo.</em>
+        </h1>
+
+        <p class="hero-text">
+            Antes dos milhões de visualizações, existem pessoas.
+            Conheça quem transforma uma sala comum em uma história
+            que milhares de pessoas decidiram acompanhar.
+        </p>
+
+        <div class="hero-stat">
+
+            <strong>30 pessoas</strong>
+
+            <span></span>
+
+            <small>
+                Uma única história
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section" id="alunos">
+
+    <div class="section-content">
+
+        <div class="team-header">
+
+            <div>
+
+                <div class="section-label reveal">
+                    02 — O ELENCO
+                </div>
+
+                <h2 class="section-title reveal">
+                    Cada um tem<br>
+                    seu <em>jeito.</em>
+                </h2>
+
+                <p class="section-description reveal">
+                    Trinta pessoas diferentes.
+                    Personalidades completamente diferentes.
+                    E, por algum motivo, tudo isso funciona.
+                </p>
+
+            </div>
+
+            <div class="team-counter reveal">
+
+                <strong>30</strong>
+
+                <span>
+                    integrantes
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="team-grid">
+
+
+            <!-- 01 -->
+            <article
+                class="person-card reveal"
+                data-name="Nome do Aluno 01"
+                data-role="Criativo"
+                data-description="O cérebro das ideias. Sempre aparece com alguma coisa diferente e normalmente transforma uma ideia simples em conteúdo."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/11.jpg"
+            >
+
+                <div class="person-photo">
+                    <img src="dev.jpeg" alt="Aluno 01">
+                </div>
+
+                <span class="person-number">01</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+
+                    <span class="person-role">
+                        PROGRAMADOR
+                    </span>
+
+                    <h3>
+                        Vinicios Santana
+                    </h3>
+
+                    <p>
+                        VICE PRESIDENTE DO GRÊMIO
+                    </p>
+
+                    <span class="person-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- 02 -->
+            <article
+                class="person-card reveal"
+                data-name="Nome do Aluno 02"
+                data-role="Caos"
+                data-description="O caos oficial. Onde ele aparece, alguma história acontece."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/12.jpg"
+            >
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Aluno 02">
+                </div>
+
+                <span class="person-number">02</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+
+                    <span class="person-role">CAOS</span>
+
+                    <h3>Nome do Aluno 02</h3>
+
+                    <p>O caos oficial.</p>
+
+                    <span class="person-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- 03 -->
+            <article
+                class="person-card reveal"
+                data-name="Nome do Aluno 03"
+                data-role="Conteúdo"
+                data-description="Sempre preparado para transformar qualquer momento em uma oportunidade de conteúdo."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/13.jpg"
+            >
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/13.jpg" alt="Aluno 03">
+                </div>
+
+                <span class="person-number">03</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+
+                    <span class="person-role">CONTEÚDO</span>
+
+                    <h3>Nome do Aluno 03</h3>
+
+                    <p>Sempre preparado.</p>
+
+                    <span class="person-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- 04 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 04"
+                data-role="Energia"
+                data-description="A energia da turma. Difícil ficar parado quando essa pessoa está por perto."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/14.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/14.jpg" alt="Aluno 04">
+                </div>
+
+                <span class="person-number">04</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">ENERGIA</span>
+                    <h3>Nome do Aluno 04</h3>
+                    <p>A energia da turma.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 05 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 05"
+                data-role="Espontâneo"
+                data-description="O espontâneo. Nunca dá para prever exatamente o que vai acontecer."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/15.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/15.jpg" alt="Aluno 05">
+                </div>
+
+                <span class="person-number">05</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">ESPONTÂNEO</span>
+                    <h3>Nome do Aluno 05</h3>
+                    <p>O espontâneo.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 06 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 06"
+                data-role="Observador"
+                data-description="O observador. Pode até parecer quieto, mas percebe tudo que acontece."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/16.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/16.jpg" alt="Aluno 06">
+                </div>
+
+                <span class="person-number">06</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">OBSERVADOR</span>
+                    <h3>Nome do Aluno 06</h3>
+                    <p>O observador.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 07 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 07"
+                data-role="Personalidade"
+                data-description="Uma personalidade impossível de passar despercebida."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/17.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/17.jpg" alt="Aluno 07">
+                </div>
+
+                <span class="person-number">07</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">PERSONALIDADE</span>
+                    <h3>Nome do Aluno 07</h3>
+                    <p>A personalidade.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 08 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 08"
+                data-role="Imprevisível"
+                data-description="O imprevisível. Sempre existe uma história quando ele está envolvido."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/18.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Aluno 08">
+                </div>
+
+                <span class="person-number">08</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">IMPREVISÍVEL</span>
+                    <h3>Nome do Aluno 08</h3>
+                    <p>O imprevisível.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 09 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 09"
+                data-role="Estratégia"
+                data-description="O estratégico. Pensa antes, durante e depois."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/19.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/19.jpg" alt="Aluno 09">
+                </div>
+
+                <span class="person-number">09</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">ESTRATÉGIA</span>
+                    <h3>Nome do Aluno 09</h3>
+                    <p>O estratégico.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 10 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 10"
+                data-role="Protagonista"
+                data-description="O protagonista. Quando começa a história, normalmente está no centro dela."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/20.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/20.jpg" alt="Aluno 10">
+                </div>
+
+                <span class="person-number">10</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">PROTAGONISTA</span>
+                    <h3>Nome do Aluno 10</h3>
+                    <p>O protagonista.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 11 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 11"
+                data-role="Ideias"
+                data-description="O estrategista das ideias. Sempre existe um plano por trás."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/21.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/21.jpg" alt="Aluno 11">
+                </div>
+
+                <span class="person-number">11</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">IDEIAS</span>
+                    <h3>Nome do Aluno 11</h3>
+                    <p>O estrategista.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 12 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 12"
+                data-role="Humor"
+                data-description="O humorista. Sempre encontra uma maneira de transformar a situação em piada."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/22.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Aluno 12">
+                </div>
+
+                <span class="person-number">12</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">HUMOR</span>
+                    <h3>Nome do Aluno 12</h3>
+                    <p>O humorista.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 13 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 13"
+                data-role="Discreto"
+                data-description="O discreto. Não precisa aparecer muito para fazer parte da história."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/23.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/23.jpg" alt="Aluno 13">
+                </div>
+
+                <span class="person-number">13</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">DISCRETO</span>
+                    <h3>Nome do Aluno 13</h3>
+                    <p>O discreto.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 14 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 14"
+                data-role="Animador"
+                data-description="O animador. Se a turma está parada, isso provavelmente não vai durar muito."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/24.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/24.jpg" alt="Aluno 14">
+                </div>
+
+                <span class="person-number">14</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">ANIMADOR</span>
+                    <h3>Nome do Aluno 14</h3>
+                    <p>O animador.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 15 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 15"
+                data-role="Perfeccionista"
+                data-description="O perfeccionista. Se pode ficar melhor, ainda não terminou."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/25.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/25.jpg" alt="Aluno 15">
+                </div>
+
+                <span class="person-number">15</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">PERFECCIONISTA</span>
+                    <h3>Nome do Aluno 15</h3>
+                    <p>O perfeccionista.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 16 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 16"
+                data-role="Câmera"
+                data-description="O câmera. Sempre existe alguém registrando o momento."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/26.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Aluno 16">
+                </div>
+
+                <span class="person-number">16</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">CÂMERA</span>
+                    <h3>Nome do Aluno 16</h3>
+                    <p>O câmera.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 17 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 17"
+                data-role="Comunicador"
+                data-description="O comunicador. Se precisa falar, explicar ou apresentar, pode chamar."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/27.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/27.jpg" alt="Aluno 17">
+                </div>
+
+                <span class="person-number">17</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">COMUNICADOR</span>
+                    <h3>Nome do Aluno 17</h3>
+                    <p>O comunicador.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 18 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 18"
+                data-role="Mistério"
+                data-description="O misterioso. Nem tudo precisa ser explicado."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/28.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Aluno 18">
+                </div>
+
+                <span class="person-number">18</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">MISTÉRIO</span>
+                    <h3>Nome do Aluno 18</h3>
+                    <p>O misterioso.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 19 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 19"
+                data-role="Criador"
+                data-description="O criador. Está sempre inventando alguma coisa nova."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/29.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/29.jpg" alt="Aluno 19">
+                </div>
+
+                <span class="person-number">19</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">CRIADOR</span>
+                    <h3>Nome do Aluno 19</h3>
+                    <p>O criador.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 20 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 20"
+                data-role="Competitivo"
+                data-description="O competitivo. Qualquer coisa pode virar uma disputa."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/30.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/30.jpg" alt="Aluno 20">
+                </div>
+
+                <span class="person-number">20</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">COMPETITIVO</span>
+                    <h3>Nome do Aluno 20</h3>
+                    <p>O competitivo.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 21 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 21"
+                data-role="Natural"
+                data-description="O espontâneo. Parece que nem está tentando, mas sempre rende bons momentos."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/31.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/31.jpg" alt="Aluno 21">
+                </div>
+
+                <span class="person-number">21</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">NATURAL</span>
+                    <h3>Nome do Aluno 21</h3>
+                    <p>O espontâneo.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 22 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 22"
+                data-role="Comentarista"
+                data-description="O comentarista. Tem opinião sobre absolutamente tudo."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/32.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Aluno 22">
+                </div>
+
+                <span class="person-number">22</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">COMENTARISTA</span>
+                    <h3>Nome do Aluno 22</h3>
+                    <p>O comentarista.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 23 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 23"
+                data-role="Tranquilo"
+                data-description="O tranquilo. Enquanto todo mundo está surtando, ele está perfeitamente bem."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/33.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Aluno 23">
+                </div>
+
+                <span class="person-number">23</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">TRANQUILO</span>
+                    <h3>Nome do Aluno 23</h3>
+                    <p>O tranquilo.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 24 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 24"
+                data-role="Acelerado"
+                data-description="O acelerado. Faz tudo rápido, fala rápido e provavelmente já está pensando no próximo vídeo."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/34.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/34.jpg" alt="Aluno 24">
+                </div>
+
+                <span class="person-number">24</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">ACELERADO</span>
+                    <h3>Nome do Aluno 24</h3>
+                    <p>O acelerado.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 25 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 25"
+                data-role="Artista"
+                data-description="O artista. Enxerga as coisas de um jeito um pouco diferente."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/35.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="Aluno 25">
+                </div>
+
+                <span class="person-number">25</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">ARTISTA</span>
+                    <h3>Nome do Aluno 25</h3>
+                    <p>O artista.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 26 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 26"
+                data-role="Fotógrafo"
+                data-description="O fotógrafo. Se aconteceu, provavelmente existe uma foto."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/36.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/36.jpg" alt="Aluno 26">
+                </div>
+
+                <span class="person-number">26</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">FOTÓGRAFO</span>
+                    <h3>Nome do Aluno 26</h3>
+                    <p>O fotógrafo.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 27 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 27"
+                data-role="Conselheiro"
+                data-description="O conselheiro. Sempre aparece com alguma solução quando ninguém sabe o que fazer."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/37.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/37.jpg" alt="Aluno 27">
+                </div>
+
+                <span class="person-number">27</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">CONSELHEIRO</span>
+                    <h3>Nome do Aluno 27</h3>
+                    <p>O conselheiro.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 28 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 28"
+                data-role="Imprevisível"
+                data-description="O imprevisível. Ninguém sabe qual será a próxima cena."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/38.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/38.jpg" alt="Aluno 28">
+                </div>
+
+                <span class="person-number">28</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">IMPREVISÍVEL</span>
+                    <h3>Nome do Aluno 28</h3>
+                    <p>O imprevisível.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 29 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 29"
+                data-role="Parceiro"
+                data-description="O parceiro. Está presente nos momentos bons, ruins e principalmente nos mais aleatórios."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/men/39.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/men/39.jpg" alt="Aluno 29">
+                </div>
+
+                <span class="person-number">29</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">PARCEIRO</span>
+                    <h3>Nome do Aluno 29</h3>
+                    <p>O parceiro.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+
+            <!-- 30 -->
+            <article class="person-card reveal"
+                data-name="Nome do Aluno 30"
+                data-role="Essencial"
+                data-description="A última peça. Porque uma turma só é uma turma quando todas as pessoas fazem parte dela."
+                data-instagram="https://instagram.com/"
+                data-photo="https://randomuser.me/api/portraits/women/40.jpg">
+
+                <div class="person-photo">
+                    <img src="https://randomuser.me/api/portraits/women/40.jpg" alt="Aluno 30">
+                </div>
+
+                <span class="person-number">30</span>
+
+                <a class="person-social" href="https://instagram.com/" target="_blank" onclick="event.stopPropagation()">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <div class="person-info">
+                    <span class="person-role">ESSENCIAL</span>
+                    <h3>Nome do Aluno 30</h3>
+                    <p>A última peça.</p>
+                    <span class="person-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section featured">
+
+    <div class="section-content">
+
+        <div class="featured-content">
+
+            <div class="featured-number">
+                30
+            </div>
+
+            <div class="featured-text">
+
+                <div class="section-label reveal">
+                    03 — UMA TURMA
+                </div>
+
+                <h2 class="reveal">
+                    Trinta histórias.<br>
+                    <em>Uma só turma.</em>
+                </h2>
+
+                <p class="reveal">
+                    Talvez seja justamente essa mistura que faz tudo funcionar.
+                    Personalidades diferentes, ideias diferentes e momentos
+                    que acabam virando histórias para milhares de pessoas.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <div class="footer-content">
+
+        <div class="footer-copy">
+            © 2026 Nossa Turma. Todos os momentos registrados.
+        </div>
+
+        <div class="footer-socials">
+
+            <a
+                href="https://www.instagram.com/terceiraogussmao/"
+                target="_blank"
+                aria-label="Instagram"
+            >
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a
+                href="https://www.tiktok.com/@terceiraogussmao"
+                target="_blank"
+                aria-label="TikTok"
+            >
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     MODAL DO ALUNO
+========================= -->
+
+<div class="profile-modal" id="profileModal">
+
+    <div class="modal-box">
+
+        <button
+            class="modal-close"
+            id="modalClose"
+            aria-label="Fechar"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="modal-content">
+
+            <div
+                class="modal-photo"
+                id="modalPhoto"
+            ></div>
+
+            <div class="modal-info">
+
+                <span
+                    class="modal-number"
+                    id="modalNumber"
+                >
+                    01
+                </span>
+
+                <h2 id="modalName">
+                    Nome
+                </h2>
+
+                <div
+                    class="modal-role"
+                    id="modalRole"
+                >
+                    FUNÇÃO
+                </div>
+
+                <p
+                    class="modal-description"
+                    id="modalDescription"
+                >
+                    Descrição do aluno.
+                </p>
+
+                <a
+                    href="#"
+                    class="modal-social"
+                    id="modalInstagram"
+                    target="_blank"
+                >
+                    <i class="fa-brands fa-instagram"></i>
+                    Instagram
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   ELEMENTOS
+========================= */
+
+const navbar = document.getElementById("navbar");
+const themeToggle = document.getElementById("themeToggle");
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+const profileModal = document.getElementById("profileModal");
+const modalClose = document.getElementById("modalClose");
+
+const modalPhoto = document.getElementById("modalPhoto");
+const modalNumber = document.getElementById("modalNumber");
+const modalName = document.getElementById("modalName");
+const modalRole = document.getElementById("modalRole");
+const modalDescription = document.getElementById("modalDescription");
+const modalInstagram = document.getElementById("modalInstagram");
+
+const cursorGlow = document.getElementById("cursorGlow");
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+window.addEventListener("scroll", () => {
+
+    if(window.scrollY > 30){
+        navbar.classList.add("scrolled");
+    }else{
+        navbar.classList.remove("scrolled");
+    }
+
+});
+
+
+/* =========================
+   MENU MOBILE
+========================= */
+
+menuToggle.addEventListener("click", () => {
+
+    navLinks.classList.toggle("open");
+
+    const icon = menuToggle.querySelector("i");
+
+    if(navLinks.classList.contains("open")){
+        icon.className = "fa-solid fa-xmark";
+    }else{
+        icon.className = "fa-solid fa-bars";
+    }
+
+});
+
+
+document.querySelectorAll(".nav-links a").forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        navLinks.classList.remove("open");
+
+        menuToggle.querySelector("i").className =
+            "fa-solid fa-bars";
+
+    });
+
+});
+
+
+/* =========================
+   TEMA
+========================= */
+
+const savedTheme = localStorage.getItem("turma-theme");
+
+if(savedTheme === "light"){
+    document.body.classList.add("light");
+}
+
+function updateThemeIcon(){
+
+    const icon = themeToggle.querySelector("i");
+
+    if(document.body.classList.contains("light")){
+        icon.className = "fa-solid fa-sun";
+    }else{
+        icon.className = "fa-solid fa-moon";
+    }
+
+}
+
+updateThemeIcon();
+
+
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("light");
+
+    localStorage.setItem(
+        "turma-theme",
+        document.body.classList.contains("light")
+            ? "light"
+            : "dark"
+    );
+
+    updateThemeIcon();
+
+});
+
+
+/* =========================
+   REVEAL
+========================= */
+
+const revealElements =
+    document.querySelectorAll(".reveal");
+
+const revealObserver =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                if(entry.isIntersecting){
+
+                    entry.target.classList.add("active");
+
+                    revealObserver.unobserve(
+                        entry.target
+                    );
+
+                }
+
+            });
+
+        },
+        {
+            threshold:.12
+        }
+    );
+
+
+revealElements.forEach(element => {
+
+    revealObserver.observe(element);
+
+});
+
+
+/* =========================
+   CURSOR GLOW
+========================= */
+
+document.addEventListener("mousemove", event => {
+
+    if(window.innerWidth <= 650){
+        return;
+    }
+
+    cursorGlow.style.left =
+        `${event.clientX}px`;
+
+    cursorGlow.style.top =
+        `${event.clientY}px`;
+
+});
+
+
+/* =========================
+   MODAL
+========================= */
+
+document.querySelectorAll(".person-card").forEach(card => {
+
+    card.addEventListener("click", () => {
+
+        const name =
+            card.dataset.name;
+
+        const role =
+            card.dataset.role;
+
+        const description =
+            card.dataset.description;
+
+        const instagram =
+            card.dataset.instagram;
+
+        const photo =
+            card.dataset.photo;
+
+        const number =
+            card.querySelector(".person-number").textContent;
+
+
+        modalNumber.textContent =
+            number;
+
+        modalName.textContent =
+            name;
+
+        modalRole.textContent =
+            role;
+
+        modalDescription.textContent =
+            description;
+
+        modalInstagram.href =
+            instagram;
+
+        modalPhoto.style.backgroundImage =
+            `url("${photo}")`;
+
+        profileModal.classList.add("active");
+
+        document.body.classList.add("modal-open");
+
+    });
+
+});
+
+
+/* =========================
+   FECHAR MODAL
+========================= */
+
+function closeModal(){
+
+    profileModal.classList.remove("active");
+
+    document.body.classList.remove("modal-open");
+
+}
+
+
+modalClose.addEventListener(
+    "click",
+    closeModal
+);
+
+
+profileModal.addEventListener(
+    "click",
+    event => {
+
+        if(event.target === profileModal){
+            closeModal();
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Escape"){
+            closeModal();
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" href="navicon.png" type="image/png">
+
+<title>Nossa Turma • Conteúdo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+:root{
+    --vinho:#5d071b;
+    --vinho-dark:#35030f;
+    --vinho-deep:#200108;
+    --vinho-light:#8d1837;
+    --vinho-soft:#b84c68;
+
+    --white:#ffffff;
+    --text:#ffffff;
+    --muted:rgba(255,255,255,.62);
+    --line:rgba(255,255,255,.12);
+    --card:rgba(255,255,255,.055);
+
+    --shadow:0 30px 90px rgba(0,0,0,.3);
+
+    --transition:.5s cubic-bezier(.16,1,.3,1);
+}
+
+body.light{
+    --vinho:#5d071b;
+    --vinho-dark:#f6eef1;
+    --vinho-deep:#ffffff;
+    --vinho-light:#8d1837;
+    --vinho-soft:#a52b4d;
+
+    --white:#ffffff;
+    --text:#5d071b;
+    --muted:rgba(93,7,27,.62);
+    --line:rgba(93,7,27,.12);
+    --card:rgba(93,7,27,.045);
+
+    --shadow:0 30px 90px rgba(93,7,27,.12);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Inter",sans-serif;
+    background:var(--vinho-deep);
+    color:var(--text);
+    overflow-x:hidden;
+    transition:background .6s ease,color .6s ease;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font-family:inherit;
+}
+
+::selection{
+    background:var(--vinho);
+    color:#fff;
+}
+
+/* =========================
+   CURSOR
+========================= */
+
+.cursor-glow{
+    position:fixed;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    background:rgba(141,24,55,.08);
+    filter:blur(75px);
+    pointer-events:none;
+    z-index:0;
+    transform:translate(-50%,-50%);
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:82px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    z-index:1000;
+
+    transition:.4s ease;
+}
+
+.navbar.scrolled{
+    background:rgba(32,1,8,.78);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--line);
+}
+
+body.light .navbar.scrolled{
+    background:rgba(255,255,255,.86);
+}
+
+.nav-content{
+    width:min(1200px,92%);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:-.04em;
+}
+
+.logo-mark{
+    width:38px;
+    height:38px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:12px;
+
+    background:var(--card);
+    border:1px solid var(--line);
+
+    font-size:11px;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:30px;
+
+    list-style:none;
+}
+
+.nav-links a{
+    position:relative;
+
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.08em;
+
+    opacity:.65;
+
+    transition:.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+    opacity:1;
+}
+
+.nav-links a::after{
+    content:"";
+
+    position:absolute;
+    left:0;
+    bottom:-8px;
+
+    width:0;
+    height:2px;
+
+    background:currentColor;
+
+    transition:.3s;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after{
+    width:100%;
+}
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.theme-toggle,
+.menu-toggle{
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--text);
+
+    cursor:pointer;
+
+    transition:var(--transition);
+}
+
+.theme-toggle:hover,
+.menu-toggle:hover{
+    background:var(--vinho);
+    color:#fff;
+
+    transform:scale(1.07);
+}
+
+.menu-toggle{
+    display:none;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:92vh;
+
+    position:relative;
+
+    display:flex;
+    align-items:center;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(141,24,55,.45),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 10% 90%,
+            rgba(93,7,27,.45),
+            transparent 35%
+        ),
+        var(--vinho-deep);
+}
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--vinho-deep) 0%,
+            rgba(32,1,8,.76) 50%,
+            transparent 100%
+        );
+}
+
+body.light .hero::before{
+    background:
+        linear-gradient(
+            90deg,
+            #fff 0%,
+            rgba(255,255,255,.85) 50%,
+            transparent 100%
+        );
+}
+
+.hero-content{
+    width:min(1200px,92%);
+    margin:auto;
+
+    position:relative;
+    z-index:2;
+
+    padding-top:80px;
+}
+
+.hero-label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    margin-bottom:25px;
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:.2em;
+    text-transform:uppercase;
+
+    animation:fadeUp .9s .1s both;
+}
+
+.hero-label span{
+    width:30px;
+    height:1px;
+
+    background:currentColor;
+}
+
+.hero h1{
+    max-width:1000px;
+
+    font-size:clamp(70px,11vw,155px);
+    line-height:.82;
+
+    letter-spacing:-.09em;
+    font-weight:900;
+
+    animation:fadeUp .9s .2s both;
+}
+
+.hero h1 em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.hero-text{
+    max-width:560px;
+
+    margin-top:35px;
+
+    color:var(--muted);
+
+    font-size:14px;
+    line-height:1.8;
+
+    animation:fadeUp .9s .35s both;
+}
+
+.hero-buttons{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    margin-top:38px;
+
+    animation:fadeUp .9s .5s both;
+}
+
+.hero-button{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    padding:15px 20px;
+
+    border:1px solid var(--line);
+    border-radius:100px;
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:.08em;
+    text-transform:uppercase;
+
+    transition:var(--transition);
+}
+
+.hero-button.primary{
+    background:var(--vinho);
+    border-color:var(--vinho);
+    color:#fff;
+}
+
+.hero-button:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow);
+}
+
+.hero-button:not(.primary):hover{
+    background:var(--card);
+}
+
+.hero-number{
+    position:absolute;
+
+    right:3%;
+    bottom:-50px;
+
+    font-size:clamp(180px,28vw,430px);
+
+    line-height:.7;
+
+    font-weight:900;
+
+    letter-spacing:-.12em;
+
+    color:var(--vinho);
+
+    opacity:.1;
+
+    user-select:none;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    padding:35px 0;
+
+    background:var(--vinho);
+
+    color:#fff;
+}
+
+.stats-content{
+    width:min(1200px,92%);
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+}
+
+.stat{
+    padding:10px 30px;
+
+    border-right:1px solid rgba(255,255,255,.15);
+}
+
+.stat:first-child{
+    padding-left:0;
+}
+
+.stat:last-child{
+    border-right:0;
+}
+
+.stat strong{
+    display:block;
+
+    font-size:34px;
+
+    letter-spacing:-.06em;
+}
+
+.stat span{
+    display:block;
+
+    margin-top:5px;
+
+    color:rgba(255,255,255,.52);
+
+    font-size:9px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.15em;
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section{
+    padding:140px 0;
+}
+
+.section-content{
+    width:min(1200px,92%);
+    margin:auto;
+}
+
+.section-label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    margin-bottom:20px;
+
+    color:var(--muted);
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:.2em;
+    text-transform:uppercase;
+}
+
+.section-label::before{
+    content:"";
+
+    width:25px;
+    height:1px;
+
+    background:currentColor;
+}
+
+.section-title{
+    font-size:clamp(45px,6vw,80px);
+
+    line-height:.94;
+
+    letter-spacing:-.07em;
+}
+
+.section-title em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.section-description{
+    max-width:550px;
+
+    margin-top:25px;
+
+    color:var(--muted);
+
+    font-size:14px;
+    line-height:1.8;
+}
+
+/* =========================
+   FILTER
+========================= */
+
+.content-header{
+    display:flex;
+
+    align-items:end;
+    justify-content:space-between;
+
+    gap:40px;
+
+    margin-bottom:55px;
+}
+
+.content-filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.filter-button{
+    padding:10px 15px;
+
+    border:1px solid var(--line);
+    border-radius:100px;
+
+    background:transparent;
+
+    color:var(--text);
+
+    font-size:9px;
+    font-weight:800;
+
+    letter-spacing:.08em;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.filter-button:hover,
+.filter-button.active{
+    background:var(--vinho);
+    border-color:var(--vinho);
+
+    color:#fff;
+}
+
+/* =========================
+   CONTENT GRID
+========================= */
+
+.content-grid{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:18px;
+}
+
+.content-card{
+    position:relative;
+
+    min-height:450px;
+
+    overflow:hidden;
+
+    border-radius:22px;
+
+    background:var(--card);
+
+    border:1px solid var(--line);
+
+    cursor:pointer;
+
+    transition:var(--transition);
+}
+
+.content-card:hover{
+    transform:translateY(-8px);
+
+    box-shadow:var(--shadow);
+}
+
+.content-image{
+    position:absolute;
+    inset:0;
+
+    overflow:hidden;
+}
+
+.content-image img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+    transition:.8s cubic-bezier(.16,1,.3,1);
+}
+
+.content-card:hover .content-image img{
+    transform:scale(1.08);
+}
+
+.content-image::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.08) 20%,
+            rgba(32,1,8,.18) 45%,
+            rgba(32,1,8,.96) 100%
+        );
+}
+
+.content-platform{
+    position:absolute;
+
+    top:18px;
+    left:18px;
+
+    z-index:3;
+
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    padding:8px 11px;
+
+    border-radius:100px;
+
+    background:rgba(0,0,0,.3);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    color:#fff;
+
+    font-size:9px;
+    font-weight:800;
+
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.content-play{
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%) scale(.85);
+
+    width:58px;
+    height:58px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.92);
+
+    color:var(--vinho);
+
+    z-index:4;
+
+    opacity:0;
+
+    transition:.4s;
+}
+
+.content-card:hover .content-play{
+    opacity:1;
+
+    transform:
+        translate(-50%,-50%)
+        scale(1);
+}
+
+.content-info{
+    position:absolute;
+
+    left:22px;
+    right:22px;
+    bottom:22px;
+
+    z-index:5;
+
+    color:#fff;
+}
+
+.content-category{
+    display:inline-flex;
+
+    padding:6px 9px;
+
+    margin-bottom:10px;
+
+    border-radius:100px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(10px);
+
+    font-size:8px;
+    font-weight:800;
+
+    letter-spacing:.13em;
+    text-transform:uppercase;
+}
+
+.content-info h3{
+    max-width:390px;
+
+    font-size:24px;
+
+    line-height:1;
+
+    letter-spacing:-.05em;
+}
+
+.content-info p{
+    margin-top:8px;
+
+    max-width:400px;
+
+    color:rgba(255,255,255,.58);
+
+    font-size:10px;
+
+    line-height:1.5;
+}
+
+.content-meta{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    margin-top:15px;
+
+    color:rgba(255,255,255,.5);
+
+    font-size:9px;
+}
+
+.content-meta span{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+/* =========================
+   DESTAQUE
+========================= */
+
+.featured-content{
+    display:grid;
+
+    grid-template-columns:1.15fr .85fr;
+
+    gap:80px;
+
+    align-items:center;
+}
+
+.featured-video{
+    position:relative;
+
+    aspect-ratio:16/10;
+
+    overflow:hidden;
+
+    border-radius:28px;
+
+    background:var(--vinho);
+
+    box-shadow:var(--shadow);
+}
+
+.featured-video img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.7s;
+}
+
+.featured-video:hover img{
+    transform:scale(1.04);
+}
+
+.featured-video-overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(32,1,8,.25);
+}
+
+.featured-play{
+    width:78px;
+    height:78px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    color:var(--vinho);
+
+    font-size:18px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+
+    transition:.4s;
+}
+
+.featured-video:hover .featured-play{
+    transform:scale(1.1);
+}
+
+.featured-info .section-label{
+    color:var(--muted);
+}
+
+.featured-info h2{
+    font-size:clamp(45px,5vw,75px);
+
+    line-height:.92;
+
+    letter-spacing:-.07em;
+}
+
+.featured-info h2 em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.featured-info p{
+    max-width:480px;
+
+    margin-top:25px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.8;
+}
+
+.featured-link{
+    display:inline-flex;
+
+    align-items:center;
+    gap:10px;
+
+    margin-top:30px;
+
+    padding:13px 18px;
+
+    border:1px solid var(--line);
+
+    border-radius:100px;
+
+    font-size:10px;
+    font-weight:800;
+
+    transition:.3s;
+}
+
+.featured-link:hover{
+    background:var(--vinho);
+
+    color:#fff;
+
+    transform:translateX(5px);
+}
+
+/* =========================
+   CATEGORIAS
+========================= */
+
+.categories{
+    background:var(--vinho);
+
+    color:#fff;
+}
+
+.categories .section-label{
+    color:rgba(255,255,255,.5);
+}
+
+.categories-grid{
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:12px;
+
+    margin-top:60px;
+}
+
+.category-card{
+    position:relative;
+
+    min-height:240px;
+
+    padding:25px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.045);
+
+    transition:var(--transition);
+}
+
+.category-card:hover{
+    transform:translateY(-7px);
+
+    background:rgba(255,255,255,.08);
+}
+
+.category-icon{
+    width:45px;
+    height:45px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.09);
+
+    font-size:15px;
+}
+
+.category-number{
+    position:absolute;
+
+    top:15px;
+    right:20px;
+
+    font-size:10px;
+
+    opacity:.35;
+}
+
+.category-card h3{
+    font-size:24px;
+
+    letter-spacing:-.05em;
+}
+
+.category-card p{
+    margin-top:8px;
+
+    color:rgba(255,255,255,.5);
+
+    font-size:10px;
+
+    line-height:1.6;
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta{
+    padding:160px 0;
+
+    text-align:center;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.cta::before{
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+    height:500px;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    border-radius:50%;
+
+    border:1px solid var(--line);
+
+    opacity:.7;
+}
+
+.cta-content{
+    position:relative;
+    z-index:2;
+}
+
+.cta h2{
+    max-width:900px;
+
+    margin:auto;
+
+    font-size:clamp(55px,8vw,110px);
+
+    line-height:.86;
+
+    letter-spacing:-.09em;
+}
+
+.cta h2 em{
+    font-family:"Playfair Display",serif;
+    font-weight:600;
+}
+
+.cta p{
+    max-width:500px;
+
+    margin:30px auto 0;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.8;
+}
+
+.cta-buttons{
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-top:30px;
+}
+
+.cta-button{
+    display:inline-flex;
+
+    align-items:center;
+    gap:10px;
+
+    padding:15px 20px;
+
+    border:1px solid var(--line);
+
+    border-radius:100px;
+
+    font-size:10px;
+
+    font-weight:800;
+
+    transition:.3s;
+}
+
+.cta-button.primary{
+    background:var(--vinho);
+
+    color:#fff;
+
+    border-color:var(--vinho);
+}
+
+.cta-button:hover{
+    transform:translateY(-4px);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    padding:35px 0;
+
+    border-top:1px solid var(--line);
+}
+
+.footer-content{
+    width:min(1200px,92%);
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+}
+
+.footer-copy{
+    color:var(--muted);
+
+    font-size:10px;
+}
+
+.footer-socials{
+    display:flex;
+
+    gap:9px;
+}
+
+.footer-socials a{
+    width:38px;
+    height:38px;
+
+    display:grid;
+    place-items:center;
+
+    border:1px solid var(--line);
+
+    border-radius:50%;
+
+    font-size:12px;
+
+    transition:.3s;
+}
+
+.footer-socials a:hover{
+    background:var(--vinho);
+
+    color:#fff;
+
+    transform:translateY(-3px);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.video-modal{
+    position:fixed;
+
+    inset:0;
+
+    z-index:2000;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:25px;
+
+    background:rgba(8,0,2,.88);
+
+    backdrop-filter:blur(18px);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.4s;
+}
+
+.video-modal.active{
+    opacity:1;
+
+    visibility:visible;
+}
+
+.video-modal-box{
+    width:min(1000px,100%);
+
+    position:relative;
+
+    background:#000;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    transform:scale(.94);
+
+    transition:.5s cubic-bezier(.16,1,.3,1);
+}
+
+.video-modal.active .video-modal-box{
+    transform:scale(1);
+}
+
+.video-modal-image{
+    width:100%;
+
+    aspect-ratio:16/9;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+.video-modal-close{
+    position:absolute;
+
+    top:15px;
+    right:15px;
+
+    z-index:5;
+
+    width:42px;
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    border:1px solid rgba(255,255,255,.2);
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.5);
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.video-modal-close:hover{
+    background:#fff;
+
+    color:var(--vinho);
+
+    transform:rotate(90deg);
+}
+
+.video-modal-info{
+    padding:25px;
+
+    background:var(--vinho-deep);
+
+    color:var(--text);
+}
+
+.video-modal-info h2{
+    font-size:28px;
+
+    letter-spacing:-.05em;
+}
+
+.video-modal-info p{
+    margin-top:8px;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+/* =========================
+   ANIMAÇÕES
+========================= */
+
+.reveal{
+    opacity:0;
+
+    transform:translateY(35px);
+
+    transition:1s cubic-bezier(.16,1,.3,1);
+}
+
+.reveal.active{
+    opacity:1;
+
+    transform:translateY(0);
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:1000px){
+
+    .nav-links{
+        position:fixed;
+
+        top:82px;
+        left:0;
+
+        width:100%;
+
+        padding:30px;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        background:var(--vinho-deep);
+
+        border-bottom:1px solid var(--line);
+
+        transform:translateY(-130%);
+
+        transition:.5s;
+    }
+
+    .nav-links.open{
+        transform:translateY(0);
+    }
+
+    .menu-toggle{
+        display:block;
+    }
+
+    .stats-content{
+        grid-template-columns:repeat(2,1fr);
+        gap:20px;
+    }
+
+    .stat{
+        border-right:0;
+    }
+
+    .content-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .categories-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .featured-content{
+        grid-template-columns:1fr;
+
+        gap:50px;
+    }
+
+}
+
+@media(max-width:650px){
+
+    .section{
+        padding:100px 0;
+    }
+
+    .hero{
+        min-height:85vh;
+    }
+
+    .hero h1{
+        font-size:64px;
+    }
+
+    .hero-text{
+        font-size:13px;
+    }
+
+    .hero-buttons{
+        flex-wrap:wrap;
+    }
+
+    .hero-number{
+        font-size:180px;
+    }
+
+    .stats-content{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .stat{
+        padding:8px 15px;
+    }
+
+    .stat strong{
+        font-size:27px;
+    }
+
+    .content-header{
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .content-grid{
+        grid-template-columns:1fr;
+    }
+
+    .content-card{
+        min-height:480px;
+    }
+
+    .categories-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .category-card{
+        min-height:210px;
+        padding:18px;
+    }
+
+    .category-card h3{
+        font-size:19px;
+    }
+
+    .cta{
+        padding:110px 0;
+    }
+
+    .cta-buttons{
+        flex-wrap:wrap;
+    }
+
+    .footer-content{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .cursor-glow{
+        display:none;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<header class="navbar" id="navbar">
+
+    <div class="nav-content">
+
+        <a href="index.html" class="logo">
+
+            <span class="logo-mark">
+                NT
+            </span>
+
+            NOSSA TURMA
+
+        </a>
+
+
+        <nav>
+
+            <ul class="nav-links" id="navLinks">
+
+                <li>
+                    <a href="index.html">
+                        INÍCIO
+                    </a>
+                </li>
+
+                <li>
+                    <a href="turma.html">
+                        A TURMA
+                    </a>
+                </li>
+
+                <li>
+                    <a href="conteudo.html" class="active">
+                        CONTEÚDO
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html#momentos">
+                        MOMENTOS
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html#redes">
+                        REDES
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Alterar tema"
+            >
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Abrir menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="hero-number">
+        01
+    </div>
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+
+            <span></span>
+
+            01 — NOSSO CONTEÚDO
+
+        </div>
+
+
+        <h1>
+
+            Não é só<br>
+
+            <em>uma turma.</em>
+
+        </h1>
+
+
+        <p class="hero-text">
+
+            O que acontece dentro da sala não fica necessariamente
+            dentro dela. Entre vídeos, desafios, brincadeiras e
+            momentos completamente inesperados, nossa turma criou
+            uma história que ultrapassou os limites da escola.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="#videos"
+                class="hero-button primary"
+            >
+
+                VER CONTEÚDOS
+
+                <i class="fa-solid fa-arrow-down"></i>
+
+            </a>
+
+
+            <a
+                href="#categorias"
+                class="hero-button"
+            >
+
+                EXPLORAR
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<section class="stats">
+
+    <div class="stats-content">
+
+        <div class="stat">
+
+            <strong>+2M</strong>
+
+            <span>
+                Visualizações no Instagram
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>+1M</strong>
+
+            <span>
+                Visualizações no TikTok
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>30</strong>
+
+            <span>
+                Pessoas fazendo parte
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>∞</strong>
+
+            <span>
+                Momentos para contar
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     VÍDEOS
+========================= -->
+
+<section class="section" id="videos">
+
+    <div class="section-content">
+
+        <div class="content-header">
+
+            <div>
+
+                <div class="section-label reveal">
+                    02 — CONTEÚDOS
+                </div>
+
+                <h2 class="section-title reveal">
+
+                    O que a gente<br>
+
+                    <em>faz por aqui.</em>
+
+                </h2>
+
+                <p class="section-description reveal">
+
+                    Um pouco do que transformou momentos comuns
+                    em conteúdos que chegaram muito além da nossa
+                    própria sala.
+
+                </p>
+
+            </div>
+
+
+            <div class="content-filters reveal">
+
+                <button
+                    class="filter-button active"
+                    data-filter="all"
+                >
+                    TODOS
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="humor"
+                >
+                    HUMOR
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="desafios"
+                >
+                    DESAFIOS
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="rotina"
+                >
+                    ROTINA
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="content-grid">
+
+
+            <!-- 01 -->
+
+            <article
+                class="content-card reveal"
+                data-category="humor"
+                data-title="Quando a sala perde completamente o controle"
+                data-description="Porque aparentemente uma aula normal era pedir demais."
+                data-image="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=85"
+            >
+
+                <div class="content-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=85"
+                        alt="Conteúdo da turma"
+                    >
+
+                </div>
+
+
+                <span class="content-platform">
+
+                    <i class="fa-brands fa-instagram"></i>
+
+                    Instagram
+
+                </span>
+
+
+                <div class="content-play">
+
+                    <i class="fa-solid fa-play"></i>
+
+                </div>
+
+
+                <div class="content-info">
+
+                    <span class="content-category">
+                        HUMOR
+                    </span>
+
+                    <h3>
+                        Quando a sala perde completamente o controle
+                    </h3>
+
+                    <p>
+                        Porque aparentemente uma aula normal era pedir demais.
+                    </p>
+
+                    <div class="content-meta">
+
+                        <span>
+                            <i class="fa-regular fa-heart"></i>
+                            128K
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-comment"></i>
+                            2.4K
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 02 -->
+
+            <article
+                class="content-card reveal"
+                data-category="desafios"
+                data-title="O desafio que ninguém deveria ter aceitado"
+                data-description="Uma ideia simples. Uma execução questionável. Um vídeo que deu muito mais certo do que deveria."
+                data-image="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=85"
+            >
+
+                <div class="content-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=85"
+                        alt="Desafio da turma"
+                    >
+
+                </div>
+
+
+                <span class="content-platform">
+
+                    <i class="fa-brands fa-tiktok"></i>
+
+                    TikTok
+
+                </span>
+
+
+                <div class="content-play">
+
+                    <i class="fa-solid fa-play"></i>
+
+                </div>
+
+
+                <div class="content-info">
+
+                    <span class="content-category">
+                        DESAFIOS
+                    </span>
+
+                    <h3>
+                        O desafio que ninguém deveria ter aceitado
+                    </h3>
+
+                    <p>
+                        Uma ideia simples. Uma execução questionável.
+                    </p>
+
+                    <div class="content-meta">
+
+                        <span>
+                            <i class="fa-regular fa-heart"></i>
+                            241K
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-comment"></i>
+                            4.8K
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 03 -->
+
+            <article
+                class="content-card reveal"
+                data-category="rotina"
+                data-title="Mais um dia completamente normal"
+                data-description="Ou pelo menos era para ser."
+                data-image="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=85"
+            >
+
+                <div class="content-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=85"
+                        alt="Rotina da turma"
+                    >
+
+                </div>
+
+
+                <span class="content-platform">
+
+                    <i class="fa-brands fa-instagram"></i>
+
+                    Instagram
+
+                </span>
+
+
+                <div class="content-play">
+
+                    <i class="fa-solid fa-play"></i>
+
+                </div>
+
+
+                <div class="content-info">
+
+                    <span class="content-category">
+                        ROTINA
+                    </span>
+
+                    <h3>
+                        Mais um dia completamente normal
+                    </h3>
+
+                    <p>
+                        Ou pelo menos era para ser.
+                    </p>
+
+                    <div class="content-meta">
+
+                        <span>
+                            <i class="fa-regular fa-heart"></i>
+                            97K
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-comment"></i>
+                            1.7K
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 04 -->
+
+            <article
+                class="content-card reveal"
+                data-category="humor"
+                data-title="Aquele momento que deveria ter ficado fora da câmera"
+                data-description="Não ficou."
+                data-image="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1200&q=85"
+            >
+
+                <div class="content-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1200&q=85"
+                        alt="Momento engraçado"
+                    >
+
+                </div>
+
+
+                <span class="content-platform">
+
+                    <i class="fa-brands fa-tiktok"></i>
+
+                    TikTok
+
+                </span>
+
+
+                <div class="content-play">
+
+                    <i class="fa-solid fa-play"></i>
+
+                </div>
+
+
+                <div class="content-info">
+
+                    <span class="content-category">
+                        HUMOR
+                    </span>
+
+                    <h3>
+                        Aquele momento que deveria ter ficado fora da câmera
+                    </h3>
+
+                    <p>
+                        Não ficou.
+                    </p>
+
+                    <div class="content-meta">
+
+                        <span>
+                            <i class="fa-regular fa-heart"></i>
+                            312K
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-comment"></i>
+                            5.1K
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 05 -->
+
+            <article
+                class="content-card reveal"
+                data-category="desafios"
+                data-title="Dessa vez a competição ficou séria"
+                data-description="Quando ninguém aceita perder."
+                data-image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85"
+            >
+
+                <div class="content-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85"
+                        alt="Competição entre alunos"
+                    >
+
+                </div>
+
+
+                <span class="content-platform">
+
+                    <i class="fa-brands fa-instagram"></i>
+
+                    Instagram
+
+                </span>
+
+
+                <div class="content-play">
+
+                    <i class="fa-solid fa-play"></i>
+
+                </div>
+
+
+                <div class="content-info">
+
+                    <span class="content-category">
+                        DESAFIOS
+                    </span>
+
+                    <h3>
+                        Dessa vez a competição ficou séria
+                    </h3>
+
+                    <p>
+                        Quando ninguém aceita perder.
+                    </p>
+
+                    <div class="content-meta">
+
+                        <span>
+                            <i class="fa-regular fa-heart"></i>
+                            186K
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-comment"></i>
+                            3.2K
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 06 -->
+
+            <article
+                class="content-card reveal"
+                data-category="rotina"
+                data-title="Por trás de um vídeo"
+                data-description="Porque o conteúdo começa muito antes do botão publicar."
+                data-image="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=85"
+            >
+
+                <div class="content-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=85"
+                        alt="Produção de conteúdo"
+                    >
+
+                </div>
+
+
+                <span class="content-platform">
+
+                    <i class="fa-brands fa-instagram"></i>
+
+                    Instagram
+
+                </span>
+
+
+                <div class="content-play">
+
+                    <i class="fa-solid fa-play"></i>
+
+                </div>
+
+
+                <div class="content-info">
+
+                    <span class="content-category">
+                        ROTINA
+                    </span>
+
+                    <h3>
+                        Por trás de um vídeo
+                    </h3>
+
+                    <p>
+                        Porque o conteúdo começa muito antes do botão publicar.
+                    </p>
+
+                    <div class="content-meta">
+
+                        <span>
+                            <i class="fa-regular fa-heart"></i>
+                            154K
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-comment"></i>
+                            2.9K
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     DESTAQUE
+========================= -->
+
+<section class="section">
+
+    <div class="section-content">
+
+        <div class="featured-content">
+
+            <div class="featured-video reveal">
+
+                <img
+                    src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1400&q=85"
+                    alt="Conteúdo em destaque"
+                >
+
+                <div class="featured-video-overlay">
+
+                    <div class="featured-play">
+
+                        <i class="fa-solid fa-play"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="featured-info">
+
+                <div class="section-label reveal">
+                    03 — EM DESTAQUE
+                </div>
+
+                <h2 class="reveal">
+
+                    O momento<br>
+
+                    que <em>viralizou.</em>
+
+                </h2>
+
+                <p class="reveal">
+
+                    Alguns conteúdos simplesmente encontram
+                    o público certo. Este é um daqueles momentos
+                    que começaram dentro da turma e acabaram
+                    alcançando milhares de pessoas.
+
+                </p>
+
+
+                <a
+                    href="#"
+                    class="featured-link reveal"
+                >
+
+                    ASSISTIR NO INSTAGRAM
+
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CATEGORIAS
+========================= -->
+
+<section class="section categories" id="categorias">
+
+    <div class="section-content">
+
+        <div class="section-label reveal">
+            04 — NOSSO UNIVERSO
+        </div>
+
+        <h2 class="section-title reveal">
+
+            Cada tipo de conteúdo<br>
+
+            tem sua <em>história.</em>
+
+        </h2>
+
+        <p class="section-description reveal">
+
+            Não existe uma fórmula única. A graça está justamente
+            em nunca saber exatamente qual será o próximo conteúdo.
+
+        </p>
+
+
+        <div class="categories-grid">
+
+
+            <div class="category-card reveal">
+
+                <span class="category-number">
+                    01
+                </span>
+
+                <div class="category-icon">
+
+                    <i class="fa-solid fa-face-laugh"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Humor
+                    </h3>
+
+                    <p>
+                        As situações que provavelmente
+                        deveriam ter ficado fora da câmera.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="category-card reveal">
+
+                <span class="category-number">
+                    02
+                </span>
+
+                <div class="category-icon">
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Desafios
+                    </h3>
+
+                    <p>
+                        Porque uma turma competitiva
+                        sempre encontra um novo desafio.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="category-card reveal">
+
+                <span class="category-number">
+                    03
+                </span>
+
+                <div class="category-icon">
+
+                    <i class="fa-solid fa-camera"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Bastidores
+                    </h3>
+
+                    <p>
+                        O que acontece antes, durante
+                        e depois da gravação.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="category-card reveal">
+
+                <span class="category-number">
+                    04
+                </span>
+
+                <div class="category-icon">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Rotina
+                    </h3>
+
+                    <p>
+                        Porque até um dia comum pode
+                        acabar virando conteúdo.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="cta">
+
+    <div class="section-content">
+
+        <div class="cta-content">
+
+            <div class="section-label reveal" style="justify-content:center;">
+                05 — CONTINUE ACOMPANHANDO
+            </div>
+
+            <h2 class="reveal">
+
+                A história<br>
+
+                <em>continua.</em>
+
+            </h2>
+
+            <p class="reveal">
+
+                Ainda tem muito conteúdo para sair dessa turma.
+                Acompanhe nossas redes e não perca os próximos
+                capítulos.
+
+            </p>
+
+
+            <div class="cta-buttons reveal">
+
+                <a
+                    href="https://instagram.com/"
+                    target="_blank"
+                    class="cta-button primary"
+                >
+
+                    <i class="fa-brands fa-instagram"></i>
+
+                    INSTAGRAM
+
+                </a>
+
+
+                <a
+                    href="https://tiktok.com/"
+                    target="_blank"
+                    class="cta-button"
+                >
+
+                    <i class="fa-brands fa-tiktok"></i>
+
+                    TIKTOK
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <div class="footer-copy">
+
+            © 2026 Nossa Turma. Todos os momentos registrados.
+
+        </div>
+
+
+        <div class="footer-socials">
+
+            <a
+                href="https://instagram.com/"
+                target="_blank"
+                aria-label="Instagram"
+            >
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a
+                href="https://tiktok.com/"
+                target="_blank"
+                aria-label="TikTok"
+            >
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div class="video-modal" id="videoModal">
+
+    <div class="video-modal-box">
+
+        <button
+            class="video-modal-close"
+            id="videoModalClose"
+            aria-label="Fechar"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+
+        <img
+            src=""
+            alt="Conteúdo"
+            class="video-modal-image"
+            id="videoModalImage"
+        >
+
+
+        <div class="video-modal-info">
+
+            <h2 id="videoModalTitle">
+                Conteúdo
+            </h2>
+
+            <p id="videoModalDescription">
+                Descrição
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   ELEMENTOS
+========================= */
+
+const navbar =
+    document.getElementById("navbar");
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+const menuToggle =
+    document.getElementById("menuToggle");
+
+const navLinks =
+    document.getElementById("navLinks");
+
+const cursorGlow =
+    document.getElementById("cursorGlow");
+
+const videoModal =
+    document.getElementById("videoModal");
+
+const videoModalClose =
+    document.getElementById("videoModalClose");
+
+const videoModalImage =
+    document.getElementById("videoModalImage");
+
+const videoModalTitle =
+    document.getElementById("videoModalTitle");
+
+const videoModalDescription =
+    document.getElementById("videoModalDescription");
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+window.addEventListener("scroll", () => {
+
+    if(window.scrollY > 30){
+
+        navbar.classList.add("scrolled");
+
+    }else{
+
+        navbar.classList.remove("scrolled");
+
+    }
+
+});
+
+
+/* =========================
+   MENU
+========================= */
+
+menuToggle.addEventListener("click", () => {
+
+    navLinks.classList.toggle("open");
+
+    const icon =
+        menuToggle.querySelector("i");
+
+    if(navLinks.classList.contains("open")){
+
+        icon.className =
+            "fa-solid fa-xmark";
+
+    }else{
+
+        icon.className =
+            "fa-solid fa-bars";
+
+    }
+
+});
+
+
+document
+.querySelectorAll(".nav-links a")
+.forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        navLinks.classList.remove("open");
+
+        menuToggle
+            .querySelector("i")
+            .className =
+            "fa-solid fa-bars";
+
+    });
+
+});
+
+
+/* =========================
+   TEMA
+========================= */
+
+const savedTheme =
+    localStorage.getItem("turma-theme");
+
+if(savedTheme === "light"){
+
+    document.body.classList.add("light");
+
+}
+
+
+function updateThemeIcon(){
+
+    const icon =
+        themeToggle.querySelector("i");
+
+    if(
+        document.body.classList.contains("light")
+    ){
+
+        icon.className =
+            "fa-solid fa-sun";
+
+    }else{
+
+        icon.className =
+            "fa-solid fa-moon";
+
+    }
+
+}
+
+
+updateThemeIcon();
+
+
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("light");
+
+    localStorage.setItem(
+        "turma-theme",
+        document.body.classList.contains("light")
+            ? "light"
+            : "dark"
+    );
+
+    updateThemeIcon();
+
+});
+
+
+/* =========================
+   REVEAL
+========================= */
+
+const revealElements =
+    document.querySelectorAll(".reveal");
+
+const revealObserver =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                if(entry.isIntersecting){
+
+                    entry.target
+                        .classList
+                        .add("active");
+
+                    revealObserver
+                        .unobserve(entry.target);
+
+                }
+
+            });
+
+        },
+        {
+            threshold:.12
+        }
+    );
+
+
+revealElements.forEach(element => {
+
+    revealObserver.observe(element);
+
+});
+
+
+/* =========================
+   CURSOR
+========================= */
+
+document.addEventListener(
+    "mousemove",
+    event => {
+
+        if(window.innerWidth <= 650){
+            return;
+        }
+
+        cursorGlow.style.left =
+            `${event.clientX}px`;
+
+        cursorGlow.style.top =
+            `${event.clientY}px`;
+
+    }
+);
+
+
+/* =========================
+   FILTROS
+========================= */
+
+const filterButtons =
+    document.querySelectorAll(".filter-button");
+
+const contentCards =
+    document.querySelectorAll(".content-card");
+
+
+filterButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        filterButtons.forEach(item => {
+
+            item.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+
+        const filter =
+            button.dataset.filter;
+
+
+        contentCards.forEach(card => {
+
+            const category =
+                card.dataset.category;
+
+
+            if(
+                filter === "all" ||
+                category === filter
+            ){
+
+                card.style.display =
+                    "block";
+
+                setTimeout(() => {
+
+                    card.style.opacity = "1";
+                    card.style.transform =
+                        "translateY(0)";
+
+                },10);
+
+            }else{
+
+                card.style.opacity = "0";
+                card.style.transform =
+                    "translateY(15px)";
+
+                setTimeout(() => {
+
+                    card.style.display =
+                        "none";
+
+                },300);
+
+            }
+
+        });
+
+    });
+
+});
+
+
+/* =========================
+   MODAL
+========================= */
+
+contentCards.forEach(card => {
+
+    card.addEventListener("click", () => {
+
+        const title =
+            card.dataset.title;
+
+        const description =
+            card.dataset.description;
+
+        const image =
+            card.dataset.image;
+
+
+        videoModalTitle.textContent =
+            title;
+
+        videoModalDescription.textContent =
+            description;
+
+        videoModalImage.src =
+            image;
+
+
+        videoModal.classList.add("active");
+
+        document.body.style.overflow =
+            "hidden";
+
+    });
+
+});
+
+
+/* =========================
+   FECHAR MODAL
+========================= */
+
+function closeVideoModal(){
+
+    videoModal.classList.remove("active");
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+videoModalClose.addEventListener(
+    "click",
+    closeVideoModal
+);
+
+
+videoModal.addEventListener(
+    "click",
+    event => {
+
+        if(event.target === videoModal){
+
+            closeVideoModal();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Escape"){
+
+            closeVideoModal();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
